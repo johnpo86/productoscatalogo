@@ -3,6 +3,9 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+const categoryRoutes = require('./routes/categoryRoutes');
+const productRoutes = require('./routes/productRoutes');
+
 const app = express();
 
 app.use(cors());
@@ -12,9 +15,9 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'Products API',
+            title: 'Catálogo de productos',
             version: '1.0.0',
-            description: 'API for managing products'
+            description: 'API para el catálogo de productos'
         },
         servers: [
             {
@@ -22,23 +25,19 @@ const swaggerOptions = {
             }
         ]
     },
-    apis: ['src/app.js']
+    apis: ['src/routes/*.js']
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-/**
- * @swagger
- * /api/health:
- *   get:
- *     summary: Returns the health status of the API
- *     responses:
- *       200:
- *         description: OK
- */
+// Health Check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK' });
 });
+
+// Routes
+app.use('/api/categorias', categoryRoutes);
+app.use('/api/productos', productRoutes);
 
 module.exports = app;

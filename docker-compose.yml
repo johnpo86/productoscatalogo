@@ -13,6 +13,17 @@ services:
       timeout: 10s
       retries: 10
 
+  db-setup:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - MSSQL_SA_PASSWORD=Password123!
+    volumes:
+      - ./database:/usr/src/app
+    entrypoint: /bin/bash /usr/src/app/setup.sh
+    depends_on:
+      db:
+        condition: service_healthy
+
   backend:
     build: ./backend
     ports:
@@ -22,10 +33,10 @@ services:
       - DB_USER=sa
       - DB_PASSWORD=Password123!
       - DB_SERVER=db
-      - DB_NAME=master
+      - DB_NAME=CatalogDB
     depends_on:
-      db:
-        condition: service_healthy
+      db-setup:
+        condition: service_completed_successfully
 
   frontend:
     build: ./frontend

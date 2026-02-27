@@ -4,7 +4,7 @@ const config = {
     user: process.env.DB_USER || 'sa',
     password: process.env.DB_PASSWORD || 'Password123!',
     server: process.env.DB_SERVER || 'db',
-    database: process.env.DB_NAME || 'master',
+    database: process.env.DB_NAME || 'CatalogDB',
     options: {
         encrypt: true, // For Azure
         trustServerCertificate: true // For local dev
