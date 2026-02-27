@@ -145,10 +145,10 @@ const Products: React.FC = () => {
 
     return (
         <div>
-            <Card style={{ marginBottom: 16 }}>
-                <Form form={filterForm} layout="inline" onFinish={handleFilter}>
+            <Card style={{ marginBottom: 16 }} size="small">
+                <Form form={filterForm} layout="inline" onFinish={handleFilter} style={{ justifyContent: 'center' }}>
                     <Form.Item name="search" label="Buscar">
-                        <Input placeholder="Nombre o SKU" prefix={<SearchOutlined />} />
+                        <Input placeholder="Nombre o SKU" prefix={<SearchOutlined />} style={{ width: 180 }} />
                     </Form.Item>
                     <Form.Item name="idCategoria" label="Categoría">
                         <Select placeholder="Seleccionar" style={{ width: 150 }} allowClear>

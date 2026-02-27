@@ -42,14 +42,9 @@ const App: React.FC = () => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
+        theme="dark"
       >
-        <div className="demo-logo-vertical" style={{ color: 'white', padding: '16px', fontSize: '1.2rem', fontWeight: 'bold' }}>
+        <div className="demo-logo-vertical">
           🛒 Catálogo Pro
         </div>
         <Menu
@@ -61,14 +56,16 @@ const App: React.FC = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: '24px 16px 0' }}>
+        <Header style={{ padding: '0 24px', background: colorBgContainer, display: 'flex', alignItems: 'center' }}>
+          <h2 style={{ margin: 0 }}>{selectedKey === 'products' ? 'Productos' : 'Categorías'}</h2>
+        </Header>
+        <Content style={{ margin: '24px 16px', overflow: 'initial' }}>
           <div
             style={{
               padding: 24,
-              minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
+              minHeight: 'calc(100vh - 160px)',
             }}
           >
             {renderContent()}
