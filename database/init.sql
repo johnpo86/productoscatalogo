@@ -80,3 +80,41 @@ BEGIN
     JOIN inserted i ON p.IdProducto = i.IdProducto;
 END
 GO
+
+-- Insertar categorías de ejemplo si no existen
+IF NOT EXISTS (SELECT * FROM Categorias WHERE Nombre = 'Electrónica')
+BEGIN
+    INSERT INTO Categorias (Nombre, Descripcion, Activo) VALUES ('Electrónica', 'Productos electrónicos', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM Categorias WHERE Nombre = 'Ropa')
+BEGIN
+    INSERT INTO Categorias (Nombre, Descripcion, Activo) VALUES ('Ropa', 'Productos de vestir', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM Categorias WHERE Nombre = 'Hogar')
+BEGIN
+    INSERT INTO Categorias (Nombre, Descripcion, Activo) VALUES ('Hogar', 'Productos para el hogar', 1);
+END
+GO
+
+-- Insertar productos de ejemplo si no existen
+IF NOT EXISTS (SELECT * FROM Productos WHERE Nombre = 'Laptop Dell XPS 15')
+BEGIN
+    INSERT INTO Productos (IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo) VALUES (1, 'Laptop Dell XPS 15', 'Laptop de alto rendimiento', 'LAP-DELL-XPS15', 1500.00, 10, 1);
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM Productos WHERE Nombre = 'Camiseta de algodón')
+BEGIN
+    INSERT INTO Productos (IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo) VALUES (2, 'Camiseta de algodón', 'Camiseta de algodón orgánico', 'CAM-ALG-001', 20.00, 100, 1);
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM Productos WHERE Nombre = 'Silla de oficina')
+BEGIN
+    INSERT INTO Productos (IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo) VALUES (3, 'Silla de oficina', 'Silla ergonómica para oficina', 'SLL-OFF-001', 150.00, 50, 1);
+END
+GO
