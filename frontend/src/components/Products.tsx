@@ -13,6 +13,7 @@ const Products: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isUploadVisible, setIsUploadVisible] = useState(false);
     const [editingProduct, setEditingProduct] = useState<any>(null);
+    const [uploadResults, setUploadResults] = useState<any>(null);
     const [form] = Form.useForm();
     const [filterForm] = Form.useForm();
     const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -111,9 +112,22 @@ const Products: React.FC = () => {
         const { file } = info;
         try {
             const result = await productApi.uploadMasive(file);
-            message.success(result.message);
-            setIsUploadVisible(false);
+            setUploadResults(result);
+            if (result.errors && result.errors.length > 0) {
+                message.warning(`Carga finalizada con ${result.errors.length} errores.`);
+            } else {
+                message.success(result.message);
+                setIsUploadVisible(false);
+            }
             fetchData(1, pagination.pageSize);
+        } catch (error: any) {
+            message.error(error.message);
+        }
+    };
+
+    const downloadTemplate = async () => {
+        try {
+            await productApi.downloadTemplate();
         } catch (error: any) {
             message.error(error.message);
         }
@@ -252,22 +266,48 @@ const Products: React.FC = () => {
             <Modal
                 title="Carga Masiva de Productos"
                 open={isUploadVisible}
-                onCancel={() => setIsUploadVisible(false)}
-                footer={null}
+                onCancel={() => {
+                    setIsUploadVisible(false);
+                    setUploadResults(null);
+                }}
+                footer={[
+                    <Button key="download" onClick={downloadTemplate}>Descargar Plantilla</Button>,
+                    <Button key="close" type="primary" onClick={() => setIsUploadVisible(false)}>Cerrar</Button>
+                ]}
             >
-                <Upload.Dragger
-                    name="file"
-                    multiple={false}
-                    beforeUpload={(file) => {
-                        handleUpload({ file });
-                        return false;
-                    }}
-                    accept=".xlsx,.csv"
-                >
-                    <p className="ant-upload-drag-icon"><InboxOutlined /></p>
-                    <p className="ant-upload-text">Haz clic o arrastra un archivo Excel/CSV para cargar</p>
-                    <p className="ant-upload-hint">Debe incluir columnas: Nombre, IdCategoria, Precio, etc.</p>
-                </Upload.Dragger>
+                <div style={{ marginBottom: 16 }}>
+                    <Upload.Dragger
+                        name="file"
+                        multiple={false}
+                        beforeUpload={(file) => {
+                            handleUpload({ file });
+                            return false;
+                        }}
+                        accept=".xlsx,.csv"
+                        showUploadList={false}
+                    >
+                        <p className="ant-upload-drag-icon"><InboxOutlined /></p>
+                        <p className="ant-upload-text">Haz clic o arrastra un archivo para cargar</p>
+                        <p className="ant-upload-hint">Usa el botón inferior para obtener la plantilla oficial.</p>
+                    </Upload.Dragger>
+                </div>
+
+                {uploadResults && (
+                    <div style={{ maxHeight: 200, overflowY: 'auto', marginTop: 16 }}>
+                        <h4>Resultados de la última carga:</h4>
+                        <p>Total Importados: <Tag color="green">{uploadResults.totalImported}</Tag></p>
+                        {uploadResults.errors?.length > 0 && (
+                            <div>
+                                <p style={{ color: 'red', fontWeight: 'bold' }}>Errores encontrados:</p>
+                                <ul style={{ paddingLeft: 20 }}>
+                                    {uploadResults.errors.map((err: any, i: number) => (
+                                        <li key={i}>Fila {err.row}: {err.errors.join(', ')}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                )}
             </Modal>
         </div>
     );

@@ -88,4 +88,16 @@ export const productApi = {
         if (!response.ok) throw new Error(result.message || 'Error uploading file');
         return result;
     },
+    downloadTemplate: async () => {
+        const response = await fetch(`${API_BASE_URL}/productos/plantilla`);
+        if (!response.ok) throw new Error('Error descargando plantilla');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Plantilla_Productos.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
 };

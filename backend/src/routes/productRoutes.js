@@ -35,6 +35,17 @@ router.get('/', productController.getPaged);
 
 /**
  * @swagger
+ * /api/productos/plantilla:
+ *   get:
+ *     summary: Descarga una plantilla de Excel para carga masiva
+ *     responses:
+ *       200:
+ *         description: Archivo Excel .xlsx
+ */
+router.get('/plantilla', productController.downloadTemplate);
+
+/**
+ * @swagger
  * /api/productos/{id}:
  *   get:
  *     summary: Obtiene un producto por ID

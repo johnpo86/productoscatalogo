@@ -73,10 +73,24 @@ class ProductController {
     async uploadMasive(req, res) {
         try {
             if (!req.file) return res.status(400).json({ message: 'No se subió ningún archivo' });
-            const result = await productService.processMassiveUpload(req.file);
-            res.json({ message: `Carga masiva finalizada. ${result.count} productos cargados.` });
+            const results = await productService.processMassiveUpload(req.file);
+            res.json({
+                message: `Procesamiento finalizado. Importados: ${results.totalImported}. Errores: ${results.errors.length}`,
+                ...results
+            });
         } catch (error) {
             res.status(400).json({ message: error.message });
+        }
+    }
+
+    async downloadTemplate(req, res) {
+        try {
+            const buffer = await productService.generateUploadTemplate();
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            res.setHeader('Content-Disposition', 'attachment; filename=Plantilla_Productos.xlsx');
+            res.send(buffer);
+        } catch (error) {
+            res.status(500).json({ message: 'Error generando plantilla' });
         }
     }
 }
