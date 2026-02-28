@@ -15,6 +15,25 @@ docker compose up --build
 - **Backend API**: [http://localhost:4000](http://localhost:4000)
 - **Documentación Swagger**: [http://localhost:4000/api-docs](http://localhost:4000/api-docs)
 
+### 🗄️ Acceso a la Base de Datos (CLI)
+
+Para conectarte a la base de datos SQL Server y realizar consultas desde la terminal, usa el siguiente comando:
+
+```bash
+docker compose exec db /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Password123!' -d CatalogDB -C
+```
+
+**Credenciales:**
+- **Servidor:** `localhost` (dentro del contenedor)
+- **Usuario:** `sa`
+- **Password:** `Password123!`
+- **Base de Datos:** `CatalogDB`
+
+> [!TIP]
+> Una vez dentro, puedes ejecutar comandos SQL. Recuerda usar la palabra clave `GO` en una nueva línea para ejecutar tus consultas. Ejemplo:
+> `SELECT * FROM Productos;`
+> `GO`
+
 ---
 
 ## 🛠️ Arquitectura y Decisiones Técnicas
