@@ -19,23 +19,23 @@ class ProductRepository {
         const request = new sql.Request();
 
         let whereClause = 'WHERE 1=1';
-        if (search) {
+        if (search && search !== 'undefined' && search !== '') {
             whereClause += ' AND (p.Nombre LIKE @search OR p.Sku LIKE @search)';
             request.input('search', sql.NVarChar, `%${search}%`);
         }
-        if (idCategoria) {
+        if (idCategoria && idCategoria !== 'undefined' && idCategoria !== '') {
             whereClause += ' AND p.IdCategoria = @idCategoria';
             request.input('idCategoria', sql.Int, idCategoria);
         }
-        if (precioMin !== undefined) {
+        if (precioMin !== undefined && precioMin !== 'undefined' && precioMin !== '') {
             whereClause += ' AND p.Precio >= @precioMin';
             request.input('precioMin', sql.Decimal(18, 2), precioMin);
         }
-        if (precioMax !== undefined) {
+        if (precioMax !== undefined && precioMax !== 'undefined' && precioMax !== '') {
             whereClause += ' AND p.Precio <= @precioMax';
             request.input('precioMax', sql.Decimal(18, 2), precioMax);
         }
-        if (activo !== undefined) {
+        if (activo !== undefined && activo !== 'undefined' && activo !== '') {
             whereClause += ' AND p.Activo = @activo';
             request.input('activo', sql.Bit, activo === 'true' || activo === true ? 1 : 0);
         }
@@ -81,26 +81,26 @@ class ProductRepository {
     }
 
     async create(product) {
-        const { idCategoria, nombre, descripcion, sku, precio, stock, activo } = product;
+        const { IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo } = product;
         const result = await sql.query`
             INSERT INTO Productos (IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo)
-            VALUES (${idCategoria}, ${nombre}, ${descripcion}, ${sku}, ${precio}, ${stock}, ${activo === undefined ? 1 : activo});
+            VALUES (${IdCategoria}, ${Nombre}, ${Descripcion}, ${Sku}, ${Precio}, ${Stock}, ${Activo === undefined ? 1 : Activo});
             SELECT SCOPE_IDENTITY() AS id;
         `;
         return result.recordset[0].id;
     }
 
     async update(id, product) {
-        const { idCategoria, nombre, descripcion, sku, precio, stock, activo } = product;
+        const { IdCategoria, Nombre, Descripcion, Sku, Precio, Stock, Activo } = product;
         await sql.query`
             UPDATE Productos
-            SET IdCategoria = ${idCategoria},
-                Nombre = ${nombre},
-                Descripcion = ${descripcion},
-                Sku = ${sku},
-                Precio = ${precio},
-                Stock = ${stock},
-                Activo = ${activo}
+            SET IdCategoria = ${IdCategoria},
+                Nombre = ${Nombre},
+                Descripcion = ${Descripcion},
+                Sku = ${Sku},
+                Precio = ${Precio},
+                Stock = ${Stock},
+                Activo = ${Activo}
             WHERE IdProducto = ${id}
         `;
     }

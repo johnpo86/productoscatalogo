@@ -25,11 +25,11 @@ class ProductController {
 
     async create(req, res) {
         try {
-            const { nombre, precio, idCategoria } = req.body;
-            if (!nombre || !precio || !idCategoria) {
+            const { Nombre, Precio, IdCategoria } = req.body;
+            if (!Nombre || !Precio || !IdCategoria) {
                 return res.status(400).json({ message: 'Nombre, precio y categoría son obligatorios' });
             }
-            if (precio <= 0) return res.status(400).json({ message: 'El precio debe ser mayor a 0' });
+            if (Precio <= 0) return res.status(400).json({ message: 'El precio debe ser mayor a 0' });
 
             const id = await productService.createProduct(req.body);
             res.status(201).json({ id, message: 'Producto creado con éxito' });
@@ -40,6 +40,12 @@ class ProductController {
 
     async update(req, res) {
         try {
+            const { Nombre, Precio, IdCategoria } = req.body;
+            if (!Nombre || !Precio || !IdCategoria) {
+                return res.status(400).json({ message: 'Nombre, precio y categoría son obligatorios para actualizar' });
+            }
+            if (Precio <= 0) return res.status(400).json({ message: 'El precio debe ser mayor a 0' });
+
             await productService.updateProduct(req.params.id, req.body);
             res.json({ message: 'Producto actualizado con éxito' });
         } catch (error) {

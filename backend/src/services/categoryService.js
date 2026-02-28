@@ -1,6 +1,10 @@
 const categoryRepository = require('../repositories/categoryRepository');
 
 class CategoryService {
+    async getCategoriesPaged(params) {
+        return await categoryRepository.getPaged(params);
+    }
+
     async getAllCategories() {
         return await categoryRepository.getAll();
     }

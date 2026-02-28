@@ -6,12 +6,33 @@ const categoryController = require('../controllers/categoryController');
  * @swagger
  * /api/categorias:
  *   get:
- *     summary: Obtiene todas las categorías activas
+ *     summary: Obtiene categorías paginadas con filtros
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: pageSize
+ *         schema: { type: integer, default: 10 }
+ *       - in: query
+ *         name: search
+ *         schema: { type: string }
  *     responses:
  *       200:
- *         description: Lista de categorías
+ *         description: Lista paginada de categorías
  */
-router.get('/', categoryController.getAll);
+router.get('/', categoryController.getPaged);
+
+/**
+ * @swagger
+ * /api/categorias/all:
+ *   get:
+ *     summary: Obtiene todas las categorías activas (sin paginación)
+ *     responses:
+ *       200:
+ *         description: Lista completa de categorías
+ */
+router.get('/all', categoryController.getAll);
 
 /**
  * @swagger

@@ -1,9 +1,15 @@
 const API_BASE_URL = 'http://localhost:4000/api';
 
 export const categoryApi = {
-    getAll: async () => {
-        const response = await fetch(`${API_BASE_URL}/categorias`);
+    getPaged: async (params: any) => {
+        const query = new URLSearchParams(params).toString();
+        const response = await fetch(`${API_BASE_URL}/categorias?${query}`);
         if (!response.ok) throw new Error('Error fetching categories');
+        return response.json();
+    },
+    getAll: async () => {
+        const response = await fetch(`${API_BASE_URL}/categorias/all`);
+        if (!response.ok) throw new Error('Error fetching all categories');
         return response.json();
     },
     create: async (data: any) => {

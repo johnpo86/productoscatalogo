@@ -1,6 +1,18 @@
 const categoryService = require('../services/categoryService');
 
 class CategoryController {
+    async getPaged(req, res) {
+        try {
+            const { page, pageSize, search, activo, sortBy, sortDir } = req.query;
+            const result = await categoryService.getCategoriesPaged({
+                page, pageSize, search, activo, sortBy, sortDir
+            });
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
     async getAll(req, res) {
         try {
             const categories = await categoryService.getAllCategories();
@@ -32,6 +44,9 @@ class CategoryController {
 
     async update(req, res) {
         try {
+            if (!req.body.nombre) {
+                return res.status(400).json({ message: 'El nombre es obligatorio para actualizar' });
+            }
             await categoryService.updateCategory(req.params.id, req.body);
             res.json({ message: 'Categoría actualizada con éxito' });
         } catch (error) {
