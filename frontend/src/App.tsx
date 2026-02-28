@@ -45,7 +45,7 @@ const App: React.FC = () => {
         theme="dark"
       >
         <div className="demo-logo-vertical">
-          🛒 Catálogo Pro
+          🛒 Catálogo
         </div>
         <Menu
           theme="dark"
@@ -72,7 +72,7 @@ const App: React.FC = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Prueba Técnica ©{new Date().getFullYear()} Creado por Antigravity
+          Prueba Técnica ©{new Date().getFullYear()} creado con ❤️ por John
         </Footer>
       </Layout>
     </Layout>
