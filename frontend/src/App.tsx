@@ -45,7 +45,7 @@ const App: React.FC = () => {
         theme="dark"
       >
         <div className="demo-logo-vertical">
-          🛒 Catálogo
+          Catálogo
         </div>
         <Menu
           theme="dark"
