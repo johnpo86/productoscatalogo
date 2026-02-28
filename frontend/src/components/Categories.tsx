@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Table, Button, Modal, Form, Input, message, Space, Tag, Card } from 'antd';
+import { Table, Button, Modal, Form, Input, message, Space, Tag, Card, Select } from 'antd';
 import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import { categoryApi } from '../api/apiClient';
 
@@ -167,6 +167,12 @@ const Categories: React.FC = () => {
                     </Form.Item>
                     <Form.Item name="Descripcion" label="Descripción">
                         <Input.TextArea />
+                    </Form.Item>
+                    <Form.Item name="Activo" label="Estado" initialValue={true}>
+                        <Select>
+                            <Select.Option value={true}>Activo</Select.Option>
+                            <Select.Option value={false}>Inactivo</Select.Option>
+                        </Select>
                     </Form.Item>
                 </Form>
             </Modal>
