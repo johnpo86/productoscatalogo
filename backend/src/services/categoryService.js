@@ -14,7 +14,7 @@ class CategoryService {
     }
 
     async createCategory(categoryData) {
-        const existing = await categoryRepository.getByName(categoryData.nombre);
+        const existing = await categoryRepository.getByName(categoryData.Nombre);
         if (existing) {
             throw new Error('El nombre de la categoría ya existe.');
         }
@@ -22,7 +22,7 @@ class CategoryService {
     }
 
     async updateCategory(id, categoryData) {
-        const existing = await categoryRepository.getByName(categoryData.nombre);
+        const existing = await categoryRepository.getByName(categoryData.Nombre);
         if (existing && existing.IdCategoria != id) {
             throw new Error('El nombre de la categoría ya existe.');
         }

@@ -68,28 +68,29 @@ class CategoryRepository {
     }
 
     async create(category) {
-        const { nombre, descripcion } = category;
+        const { Nombre, Descripcion } = category;
         const result = await sql.query`
             INSERT INTO Categorias (Nombre, Descripcion)
-            VALUES (${nombre}, ${descripcion});
+            VALUES (${Nombre}, ${Descripcion});
             SELECT SCOPE_IDENTITY() AS id;
         `;
         return result.recordset[0].id;
     }
 
     async update(id, category) {
-        const { nombre, descripcion, activo } = category;
+        const { Nombre, Descripcion, Activo } = category;
         await sql.query`
             UPDATE Categorias
-            SET Nombre = ${nombre},
-                Descripcion = ${descripcion},
-                Activo = ${activo}
+            SET Nombre = ${Nombre},
+                Descripcion = ${Descripcion},
+                Activo = ${Activo}
             WHERE IdCategoria = ${id}
         `;
     }
 
     async delete(id) {
-        // Soft delete implementation
+        // Soft delete y activo 0 productos relacionados
+        await sql.query`UPDATE Productos SET Activo = 0 WHERE IdCategoria = ${id}`;
         await sql.query`UPDATE Categorias SET Activo = 0 WHERE IdCategoria = ${id}`;
     }
 }

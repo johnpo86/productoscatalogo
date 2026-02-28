@@ -34,7 +34,7 @@ class CategoryController {
 
     async create(req, res) {
         try {
-            if (!req.body.nombre) return res.status(400).json({ message: 'El nombre es obligatorio' });
+            if (!req.body.Nombre) return res.status(400).json({ message: 'El nombre es obligatorio' });
             const id = await categoryService.createCategory(req.body);
             res.status(201).json({ id, message: 'Categoría creada con éxito' });
         } catch (error) {
@@ -44,7 +44,7 @@ class CategoryController {
 
     async update(req, res) {
         try {
-            if (!req.body.nombre) {
+            if (!req.body.Nombre) {
                 return res.status(400).json({ message: 'El nombre es obligatorio para actualizar' });
             }
             await categoryService.updateCategory(req.params.id, req.body);

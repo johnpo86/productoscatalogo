@@ -1,4 +1,5 @@
 const productService = require('../services/productService');
+const categoryService = require('../services/categoryService');
 
 class ProductController {
     async getPaged(req, res) {
@@ -45,6 +46,13 @@ class ProductController {
                 return res.status(400).json({ message: 'Nombre, precio y categoría son obligatorios para actualizar' });
             }
             if (Precio <= 0) return res.status(400).json({ message: 'El precio debe ser mayor a 0' });
+
+            // Si activo es 1, debo confirmar que la categoria este activa
+            if (req.body.Activo === 1 || req.body.Activo === true) {
+                const category = await categoryService.getCategoryById(req.body.IdCategoria);
+                if (!category) return res.status(400).json({ message: 'La categoría no existe' });
+                if (category.Activo === 0 || category.Activo === false) return res.status(400).json({ message: 'La categoría está inactiva' });
+            }
 
             await productService.updateProduct(req.params.id, req.body);
             res.json({ message: 'Producto actualizado con éxito' });
